@@ -53,6 +53,7 @@ for movie in movie_list:
 
 for review in review_section_list:
     j=0
+    
     for i in review:
         title = i.select_one(f'div.score_reple > p > span[id=_filtered_ment_{j}]')
         if title:
