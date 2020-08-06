@@ -48,16 +48,28 @@ for movie in movie_list:
     
     review_response = requests.get('https://movie.naver.com/movie/bi/mi/pointWriteFormList.nhn', params=params)
     review_soup2 = BeautifulSoup(review_response.text, 'html.parser')
-    review_section = review_soup2.select('body > div > div > div.score_result > ul > li')
-    review_section_list.append(review_section)
-
-for review in review_section_list:
-    j=0
-    
-    for i in review:
-        title = i.select_one(f'div.score_reple > p > span[id=_filtered_ment_{j}]')
-        if title:
-            print(title.text)
+    review_list = review_soup2.select('body > div > div > div.score_result > ul > li')
+    j = 0
+    for review in review_list:
+        score = ''
+        reple = ''
+        score =review.select_one('div.star_score > em').text
+        if review.select_one(f'div.score_reple > p > span[id=_filtered_ment_{j}] > span[id=_unfiold_ment{j}]'):
+            reple =review.select_one(f'div.score_reple > p > span[id=_filtered_ment_{j}] > span > a')['data-src']
+        else:
+            reple =review.select_one(f'div.score_reple > p > span[id=_filtered_ment_{j}]').text.strip()
+        print(score,reple)
         j += 1
+
+    # review_section_list.append(review_section)
+
+# for review in review_section_list:
+#     j=0
+
+#     for i in review:
+#         title = i.select_one(f'div.score_reple > p > span[id=_filtered_ment_{j}]')
+#         if title:
+#             print(title.text)
+#         j += 1
     
     
